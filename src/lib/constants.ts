@@ -78,6 +78,14 @@ export const classifierRealAccuracyData = Array.from({ length: 30 }, (_, i) => (
   validationAccuracy: 0.6 + (0.25 * i) / 29 + Math.random() * 0.05, // Simulate increasing accuracy
 }));
 
+export const classifierMixedDataMetrics = [
+  { metric: 'Accuracy', value: 0.8157 },
+  { metric: 'Precision', value: 0.8564 },
+  { metric: 'Recall', value: 0.9075 },
+  { metric: 'F1-Score', value: 0.8812 },
+];
+
+
 export const metricComparisonData = [
   { metric: 'Accuracy', realOnly: 0.8380, mixed: 0.8157 },
   { metric: 'Precision', realOnly: 0.8504, mixed: 0.8564 },

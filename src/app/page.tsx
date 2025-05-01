@@ -1,9 +1,7 @@
 import Image from 'next/image';
-import { reportContent } from '@/lib/constants';
-import { LossChart } from '@/components/charts/loss-chart';
-import { AccuracyChart } from '@/components/charts/accuracy-chart';
+import { reportContent, classifierMixedDataMetrics } from '@/lib/constants'; // Import mixed data metrics
 import { MetricComparisonChart } from '@/components/charts/metric-comparison-chart';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from "@/components/ui/table";
 import { Separator } from '@/components/ui/separator';
 
 export default function Home() {
@@ -41,12 +39,13 @@ export default function Home() {
         <p>{reportContent.dataPreparation.visualization}</p>
         <div className="my-6 flex justify-center">
           <Image
-            src="https://picsum.photos/seed/dataprep/500/500" // Placeholder for /images/dataprep_grid.png
-            alt="Preprocessed CelebA Images Grid"
+            src="/images/image-1.png" // Updated path
+            alt="Grid of preprocessed CelebA training images"
             width={500}
             height={500}
-            className="rounded-lg shadow-md bg-white" // Added white bg for picsum
+            className="rounded-lg shadow-md bg-white"
             data-ai-hint="face grid collage"
+            priority // Prioritize loading the first image
           />
         </div>
         <p className="text-center text-sm text-muted-foreground">Figure 1: Grid of preprocessed CelebA training images.</p>
@@ -66,8 +65,15 @@ export default function Home() {
 
         <h3 id="wgan-loss-viz">3.3 Loss Visualization</h3>
         <p>{reportContent.wganImplementation.lossVisualization}</p>
-        <div className="my-6 h-[350px]">
-           <LossChart title="WGAN Generator & Discriminator Loss (Initial Training)" />
+         <div className="my-6 flex justify-center">
+           <Image
+            src="/images/image-2.png" // Updated path
+            alt="WGAN Generator & Discriminator Loss Curves"
+            width={600} // Adjust width as needed
+            height={400} // Adjust height as needed
+            className="rounded-lg shadow-md bg-white"
+            data-ai-hint="loss curve chart"
+          />
         </div>
          <p className="text-center text-sm text-muted-foreground">Figure 2: WGAN Generator & Discriminator Loss during initial training.</p>
 
@@ -76,11 +82,11 @@ export default function Home() {
         <p>{reportContent.wganImplementation.generatedImages}</p>
         <div className="my-6 flex justify-center">
           <Image
-            src="https://picsum.photos/seed/wganinitial/500/500" // Placeholder for /images/wgan_initial_grid.png
+            src="/images/image-3.png" // Updated path
             alt="Initial WGAN Generated Images Grid"
             width={500}
             height={500}
-            className="rounded-lg shadow-md bg-white" // Added white bg for picsum
+            className="rounded-lg shadow-md bg-white"
             data-ai-hint="synthetic face grid collage"
           />
         </div>
@@ -106,8 +112,8 @@ export default function Home() {
               <TableCell>585.03</TableCell>
             </TableRow>
           </TableBody>
+          <TableCaption>Table 1: Initial WGAN Evaluation Metrics.</TableCaption>
         </Table>
-         <p className="text-center text-sm text-muted-foreground">Table 1: Initial WGAN Evaluation Metrics.</p>
       </section>
 
       <Separator className="my-12" />
@@ -150,19 +156,19 @@ export default function Home() {
                  <TableCell className="text-red-600">+68.1%</TableCell> {/* Keep color for emphasis */}
               </TableRow>
             </TableBody>
+             <TableCaption>Table 2: WGAN Evaluation Metrics Comparison (Initial vs. Tuned).</TableCaption>
           </Table>
-           <p className="text-center text-sm text-muted-foreground">Table 2: WGAN Evaluation Metrics Comparison (Initial vs. Tuned).</p>
 
 
         <h3 id="tuning-visual">4.5 Visual Comparison</h3>
         <p>{reportContent.hyperparameterTuning.visual}</p>
         <div className="my-6 flex justify-center">
            <Image
-            src="https://picsum.photos/seed/wgantuned/500/500" // Placeholder for /images/wgan_tuned_grid.png
+            src="/images/image-4.png" // Updated path
             alt="Tuned WGAN Generated Images Grid"
             width={500}
             height={500}
-            className="rounded-lg shadow-md bg-white" // Added white bg for picsum
+            className="rounded-lg shadow-md bg-white"
             data-ai-hint="generated face grid collage"
           />
         </div>
@@ -183,14 +189,18 @@ export default function Home() {
 
         <h3 id="classifier-real-perf">5.3 Training and Validation Performance</h3>
         <p>{reportContent.classifierReal.performance}</p>
-        <div className="my-6 h-[350px]">
-           <LossChart title="Classifier Training & Validation Loss (Real Data)" />
+        <div className="my-6 flex justify-center">
+          <Image
+              src="/images/image-5.png" // Updated path
+              alt="Classifier Training/Validation Loss and Validation Accuracy (Real Data)"
+              width={800} // Adjust width as needed
+              height={400} // Adjust height as needed
+              className="rounded-lg shadow-md bg-white"
+              data-ai-hint="loss accuracy chart"
+            />
         </div>
-         <p className="text-center text-sm text-muted-foreground">Figure 5: Classifier loss curves when trained on real data.</p>
-         <div className="my-6 h-[350px]">
-           <AccuracyChart title="Classifier Validation Accuracy (Real Data)" />
-        </div>
-         <p className="text-center text-sm text-muted-foreground">Figure 6: Classifier validation accuracy when trained on real data.</p>
+         <p className="text-center text-sm text-muted-foreground">Figure 5: Classifier loss and validation accuracy curves when trained on real data.</p>
+
 
         <h3 id="classifier-real-eval">5.4 Test Set Evaluation</h3>
         <p>{reportContent.classifierReal.evaluation}</p>
@@ -207,8 +217,8 @@ export default function Home() {
             <TableRow><TableCell>Recall</TableCell><TableCell>0.9524</TableCell></TableRow>
             <TableRow><TableCell>F1-Score</TableCell><TableCell>0.8985</TableCell></TableRow>
           </TableBody>
+           <TableCaption>Table 3: Performance metrics of the classifier trained on real data.</TableCaption>
         </Table>
-        <p className="text-center text-sm text-muted-foreground">Table 3: Performance metrics of the classifier trained on real data.</p>
 
       </section>
 
@@ -240,10 +250,28 @@ export default function Home() {
 
         <h3 id="classifier-mixed-eval">7.3 Test Set Evaluation</h3>
         <p>{reportContent.classifierMixed.evaluation}</p>
-        <div className="my-6 h-[400px]">
-          <MetricComparisonChart />
+         <Table className="my-4">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Metric</TableHead>
+              <TableHead>Value</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {classifierMixedDataMetrics.map((item) => (
+              <TableRow key={item.metric}>
+                <TableCell>{item.metric}</TableCell>
+                <TableCell>{item.value.toFixed(4)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+           <TableCaption>Table 4: Performance metrics of the classifier trained on mixed (Real + Synthetic) data.</TableCaption>
+        </Table>
+        {/* Adjust container height and width for the chart */}
+        <div className="my-12 h-[400px] flex justify-center"> {/* Increased height and centered */}
+          <MetricComparisonChart className="w-full max-w-2xl" /> {/* Increased max-width */}
         </div>
-         <p className="text-center text-sm text-muted-foreground">Figure 7: Comparison of classifier performance (Real Data vs. Mixed Data).</p>
+         <p className="text-center text-sm text-muted-foreground -mt-8">Figure 7: Comparison of classifier performance (Real Data vs. Mixed Data).</p> {/* Adjusted margin */}
 
         <h3 id="classifier-mixed-analysis">7.4 Analysis</h3>
         <p>{reportContent.classifierMixed.analysis}</p>

@@ -1,6 +1,7 @@
 'use client';
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import type { ChartConfig } from '@/components/ui/chart'; // Import ChartConfig type
 import {
   Card,
   CardContent,
@@ -14,6 +15,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { metricComparisonData } from '@/lib/constants';
+import { cn } from "@/lib/utils"; // Import cn utility
 
 const chartConfig = {
   realOnly: {
@@ -24,11 +26,15 @@ const chartConfig = {
     label: 'Real + Synthetic Data',
     color: 'hsl(var(--chart-2))',
   },
-};
+} satisfies ChartConfig; // Add satisfies ChartConfig
 
-export function MetricComparisonChart() {
+interface MetricComparisonChartProps {
+  className?: string; // Add className prop
+}
+
+export function MetricComparisonChart({ className }: MetricComparisonChartProps) { // Destructure className
   return (
-    <Card className="h-full flex flex-col">
+    <Card className={cn("h-full flex flex-col", className)}> {/* Apply className */}
       <CardHeader>
         <CardTitle>Classifier Performance Comparison</CardTitle>
         <CardDescription>Real Data Only vs. Real + Synthetic Data</CardDescription>
@@ -38,7 +44,7 @@ export function MetricComparisonChart() {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={metricComparisonData}
-              margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+              margin={{ top: 5, right: 20, left: 10, bottom: 5 }} // Adjusted left margin
               layout="vertical" // Use vertical layout for better label reading
             >
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
