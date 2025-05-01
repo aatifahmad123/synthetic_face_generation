@@ -8,25 +8,25 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 96%; /* Light Gray */
-    --foreground: 0 0% 10%; /* Dark Gray */
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
-    --primary: 300 33% 71%; /* Lilac */
-    --primary-foreground: 0 0% 10%;
-    --secondary: 0 0% 94%; /* Slightly lighter gray */
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 90%; /* Muted Gray */
-    --muted-foreground: 0 0% 45%;
-    --accent: 300 100% 25%; /* Deep Purple */
+    --background: 300 33% 92%; /* Lilac Light */
+    --foreground: 300 10% 20%; /* Darker Gray/Purple */
+    --card: 300 33% 96%; /* Lighter Lilac for cards */
+    --card-foreground: 300 10% 15%;
+    --popover: 300 33% 96%; /* Lighter Lilac for popovers */
+    --popover-foreground: 300 10% 15%;
+    --primary: 300 50% 45%; /* Darker Lilac/Purple for Primary */
+    --primary-foreground: 0 0% 98%; /* White/Light Gray */
+    --secondary: 300 20% 88%; /* Muted Lilac */
+    --secondary-foreground: 300 10% 10%;
+    --muted: 300 20% 94%; /* Very Light Lilac/Gray */
+    --muted-foreground: 300 10% 45%;
+    --accent: 300 100% 35%; /* Deep Purple */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 88%; /* Lighter border */
-    --input: 0 0% 88%;
-    --ring: 300 100% 25%; /* Deep Purple for focus rings */
+    --border: 300 20% 80%; /* Lilac Border */
+    --input: 300 20% 85%; /* Lilac Input Border */
+    --ring: 300 100% 35%; /* Deep Purple for focus rings */
     --chart-1: 300 70% 50%; /* Purple tones for charts */
     --chart-2: 270 60% 55%;
     --chart-3: 330 65% 60%;
@@ -71,7 +71,18 @@ body {
     @apply bg-background text-foreground;
     scroll-behavior: smooth;
   }
-  section {
-    @apply scroll-mt-20; /* Offset scroll target for fixed header */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-primary; /* Darker shade for headings */
   }
+  h1 { @apply text-4xl font-bold tracking-tight; }
+  h2 { @apply text-3xl font-semibold mt-10 mb-4 border-b pb-2; }
+  h3 { @apply text-2xl font-semibold mt-8 mb-3; }
+  h4 { @apply text-xl font-semibold mt-6 mb-2; }
+  p { @apply mb-4 leading-relaxed text-foreground/80; } /* Slightly less prominent text */
+  strong { @apply font-semibold text-foreground; }
+  ul { @apply list-disc pl-6 mb-4 text-foreground/80; }
+  li { @apply mb-1; }
+  /* section {
+    @apply scroll-mt-20; // Removed offset as header is gone
+  } */
 }
