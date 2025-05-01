@@ -1,10 +1,24 @@
 import Image from 'next/image';
-import { reportContent, classifierMixedDataMetrics } from '@/lib/constants'; // Import mixed data metrics
+import { reportContent, metricComparisonData } from '@/lib/constants'; // Import metric comparison data
 import { MetricComparisonChart } from '@/components/charts/metric-comparison-chart';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableCaption } from "@/components/ui/table";
 import { Separator } from '@/components/ui/separator';
 
 export default function Home() {
+  // Extract metrics for easier access
+  const realDataMetrics = {
+    Accuracy: metricComparisonData.find(m => m.metric === 'Accuracy')?.realOnly,
+    Precision: metricComparisonData.find(m => m.metric === 'Precision')?.realOnly,
+    Recall: metricComparisonData.find(m => m.metric === 'Recall')?.realOnly,
+    'F1-Score': metricComparisonData.find(m => m.metric === 'F1-Score')?.realOnly,
+  };
+   const mixedDataMetrics = {
+    Accuracy: metricComparisonData.find(m => m.metric === 'Accuracy')?.mixed,
+    Precision: metricComparisonData.find(m => m.metric === 'Precision')?.mixed,
+    Recall: metricComparisonData.find(m => m.metric === 'Recall')?.mixed,
+    'F1-Score': metricComparisonData.find(m => m.metric === 'F1-Score')?.mixed,
+  };
+
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
       <h1 className="mb-12 text-center">
@@ -39,7 +53,7 @@ export default function Home() {
         <p>{reportContent.dataPreparation.visualization}</p>
         <div className="my-6 flex justify-center">
           <Image
-            src="/images/image-1.png" // Updated path
+            src="/images/image-1.png"
             alt="Grid of preprocessed CelebA training images"
             width={500}
             height={500}
@@ -67,7 +81,7 @@ export default function Home() {
         <p>{reportContent.wganImplementation.lossVisualization}</p>
          <div className="my-6 flex justify-center">
            <Image
-            src="/images/image-2.png" // Updated path
+            src="/images/image-2.png"
             alt="WGAN Generator & Discriminator Loss Curves"
             width={600} // Adjust width as needed
             height={400} // Adjust height as needed
@@ -82,7 +96,7 @@ export default function Home() {
         <p>{reportContent.wganImplementation.generatedImages}</p>
         <div className="my-6 flex justify-center">
           <Image
-            src="/images/image-3.png" // Updated path
+            src="/images/image-3.png"
             alt="Initial WGAN Generated Images Grid"
             width={500}
             height={500}
@@ -95,25 +109,14 @@ export default function Home() {
 
          <h3 id="wgan-eval">3.5 Quantitative Evaluation</h3>
         <p>{reportContent.wganImplementation.evaluation}</p>
-         <Table className="my-4">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Metric</TableHead>
-              <TableHead>Value</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>Inception Score (IS)</TableCell>
-              <TableCell>2.74 ± 0.12</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Fréchet Inception Distance (FID)</TableCell>
-              <TableCell>585.03</TableCell>
-            </TableRow>
-          </TableBody>
-          <TableCaption>Table 1: Initial WGAN Evaluation Metrics.</TableCaption>
-        </Table>
+        <div className="my-4 space-y-2 rounded-md border p-4 bg-card text-card-foreground">
+          <p><strong>Initial WGAN Evaluation Metrics:</strong></p>
+          <ul className="list-none pl-0">
+            <li><strong>Inception Score (IS):</strong> 2.74 ± 0.12</li>
+            <li><strong>Fréchet Inception Distance (FID):</strong> 585.03</li>
+          </ul>
+        </div>
+         <p className="text-center text-sm text-muted-foreground">Table 1: Initial WGAN Evaluation Metrics.</p>
       </section>
 
       <Separator className="my-12" />
@@ -133,38 +136,21 @@ export default function Home() {
 
          <h3 id="tuning-quality">4.4 Quality Assessment</h3>
          <p>{reportContent.hyperparameterTuning.quality}</p>
-          <Table className="my-4">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Metric</TableHead>
-                <TableHead>Initial Value</TableHead>
-                <TableHead>Tuned Value</TableHead>
-                <TableHead>% Change</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Inception Score (IS)</TableCell>
-                <TableCell>2.74 ± 0.12</TableCell>
-                <TableCell>3.26 ± 0.20</TableCell>
-                <TableCell className="text-green-600">+19.0%</TableCell> {/* Keep color for emphasis */}
-              </TableRow>
-              <TableRow>
-                <TableCell>Fréchet Inception Distance (FID)</TableCell>
-                <TableCell>585.03</TableCell>
-                <TableCell>983.53</TableCell>
-                 <TableCell className="text-red-600">+68.1%</TableCell> {/* Keep color for emphasis */}
-              </TableRow>
-            </TableBody>
-             <TableCaption>Table 2: WGAN Evaluation Metrics Comparison (Initial vs. Tuned).</TableCaption>
-          </Table>
+          <div className="my-4 space-y-2 rounded-md border p-4 bg-card text-card-foreground">
+              <p><strong>WGAN Evaluation Metrics Comparison (Initial vs. Tuned):</strong></p>
+              <ul className="list-none pl-0">
+                <li><strong>Inception Score (IS):</strong> Initial: 2.74 ± 0.12, Tuned: 3.26 ± 0.20 (<span className="text-green-600">+19.0%</span>)</li>
+                <li><strong>Fréchet Inception Distance (FID):</strong> Initial: 585.03, Tuned: 983.53 (<span className="text-red-600">+68.1%</span>)</li>
+              </ul>
+            </div>
+             <p className="text-center text-sm text-muted-foreground">Table 2: WGAN Evaluation Metrics Comparison (Initial vs. Tuned).</p>
 
 
         <h3 id="tuning-visual">4.5 Visual Comparison</h3>
         <p>{reportContent.hyperparameterTuning.visual}</p>
         <div className="my-6 flex justify-center">
            <Image
-            src="/images/image-4.png" // Updated path
+            src="/images/image-4.png"
             alt="Tuned WGAN Generated Images Grid"
             width={500}
             height={500}
@@ -191,7 +177,7 @@ export default function Home() {
         <p>{reportContent.classifierReal.performance}</p>
         <div className="my-6 flex justify-center">
           <Image
-              src="/images/image-5.png" // Updated path
+              src="/images/image-5.png"
               alt="Classifier Training/Validation Loss and Validation Accuracy (Real Data)"
               width={800} // Adjust width as needed
               height={400} // Adjust height as needed
@@ -204,21 +190,16 @@ export default function Home() {
 
         <h3 id="classifier-real-eval">5.4 Test Set Evaluation</h3>
         <p>{reportContent.classifierReal.evaluation}</p>
-         <Table className="my-4">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Metric</TableHead>
-              <TableHead>Value</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow><TableCell>Accuracy</TableCell><TableCell>0.8380</TableCell></TableRow>
-            <TableRow><TableCell>Precision</TableCell><TableCell>0.8504</TableCell></TableRow>
-            <TableRow><TableCell>Recall</TableCell><TableCell>0.9524</TableCell></TableRow>
-            <TableRow><TableCell>F1-Score</TableCell><TableCell>0.8985</TableCell></TableRow>
-          </TableBody>
-           <TableCaption>Table 3: Performance metrics of the classifier trained on real data.</TableCaption>
-        </Table>
+        <div className="my-4 space-y-2 rounded-md border p-4 bg-card text-card-foreground">
+           <p><strong>Classifier Performance Metrics (Real Data Only):</strong></p>
+           <ul className="list-none pl-0 grid grid-cols-2 gap-x-4">
+             {Object.entries(realDataMetrics).map(([metric, value]) => (
+               <li key={metric}><strong>{metric}:</strong> {value?.toFixed(4)}</li>
+             ))}
+           </ul>
+         </div>
+        <p className="text-center text-sm text-muted-foreground">Table 3: Performance metrics of the classifier trained on real data.</p>
+
 
       </section>
 
@@ -250,28 +231,21 @@ export default function Home() {
 
         <h3 id="classifier-mixed-eval">7.3 Test Set Evaluation</h3>
         <p>{reportContent.classifierMixed.evaluation}</p>
-         <Table className="my-4">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Metric</TableHead>
-              <TableHead>Value</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {classifierMixedDataMetrics.map((item) => (
-              <TableRow key={item.metric}>
-                <TableCell>{item.metric}</TableCell>
-                <TableCell>{item.value.toFixed(4)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-           <TableCaption>Table 4: Performance metrics of the classifier trained on mixed (Real + Synthetic) data.</TableCaption>
-        </Table>
-        {/* Adjust container height and width for the chart */}
-        <div className="my-12 h-[400px] flex justify-center"> {/* Increased height and centered */}
-          <MetricComparisonChart className="w-full max-w-2xl" /> {/* Increased max-width */}
+        <div className="my-4 space-y-2 rounded-md border p-4 bg-card text-card-foreground">
+          <p><strong>Classifier Performance Metrics (Real + Synthetic Data):</strong></p>
+          <ul className="list-none pl-0 grid grid-cols-2 gap-x-4">
+             {Object.entries(mixedDataMetrics).map(([metric, value]) => (
+               <li key={metric}><strong>{metric}:</strong> {value?.toFixed(4)}</li>
+             ))}
+          </ul>
         </div>
-         <p className="text-center text-sm text-muted-foreground -mt-8">Figure 7: Comparison of classifier performance (Real Data vs. Mixed Data).</p> {/* Adjusted margin */}
+         <p className="text-center text-sm text-muted-foreground">Table 4: Performance metrics of the classifier trained on mixed (Real + Synthetic) data.</p>
+
+
+        <div className="my-12 h-[400px] flex justify-center">
+          <MetricComparisonChart data={metricComparisonData} className="w-full max-w-2xl" />
+        </div>
+         <p className="text-center text-sm text-muted-foreground -mt-8">Figure 7: Comparison of classifier performance (Real Data vs. Mixed Data).</p>
 
         <h3 id="classifier-mixed-analysis">7.4 Analysis</h3>
         <p>{reportContent.classifierMixed.analysis}</p>

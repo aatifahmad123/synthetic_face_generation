@@ -14,7 +14,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { metricComparisonData } from '@/lib/constants';
 import { cn } from "@/lib/utils"; // Import cn utility
 
 const chartConfig = {
@@ -26,15 +25,22 @@ const chartConfig = {
     label: 'Real + Synthetic Data',
     color: 'hsl(var(--chart-2))',
   },
-} satisfies ChartConfig; // Add satisfies ChartConfig
+} satisfies ChartConfig;
 
-interface MetricComparisonChartProps {
-  className?: string; // Add className prop
+interface MetricData {
+  metric: string;
+  realOnly: number;
+  mixed: number;
 }
 
-export function MetricComparisonChart({ className }: MetricComparisonChartProps) { // Destructure className
+interface MetricComparisonChartProps {
+  data: MetricData[];
+  className?: string;
+}
+
+export function MetricComparisonChart({ data, className }: MetricComparisonChartProps) {
   return (
-    <Card className={cn("h-full flex flex-col", className)}> {/* Apply className */}
+    <Card className={cn("h-full flex flex-col", className)}>
       <CardHeader>
         <CardTitle>Classifier Performance Comparison</CardTitle>
         <CardDescription>Real Data Only vs. Real + Synthetic Data</CardDescription>
@@ -43,9 +49,9 @@ export function MetricComparisonChart({ className }: MetricComparisonChartProps)
         <ChartContainer config={chartConfig} className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={metricComparisonData}
-              margin={{ top: 5, right: 20, left: 10, bottom: 5 }} // Adjusted left margin
-              layout="vertical" // Use vertical layout for better label reading
+              data={data} // Use data prop here
+              margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+              layout="vertical"
             >
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
               <XAxis type="number" domain={[0, 1]} tickLine={false} axisLine={false} tickMargin={8} />
@@ -55,7 +61,7 @@ export function MetricComparisonChart({ className }: MetricComparisonChartProps)
                  tickLine={false}
                  axisLine={false}
                  tickMargin={8}
-                 width={80} // Adjust width for labels
+                 width={80}
               />
               <Tooltip
                  cursor={false}
