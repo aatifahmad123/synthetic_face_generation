@@ -139,26 +139,31 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       const [item] = payload
-      const key = `${labelKey || item.dataKey || item.name || "value"}`
-      const itemConfig = getPayloadConfigFromPayload(config, item, key)
-      const value =
-        !labelKey && typeof label === "string"
-          ? config[label as keyof typeof config]?.label || label
-          : itemConfig?.label
+      // Fallback to 'value' if dataKey/name is not available
+      const key = `${labelKey || item.dataKey || item.name || 'value'}`;
+      const itemPayload = item.payload; // Access the payload directly
+      // Use the value from the payload for the label, ensuring it's treated as a string
+      const valueFromPayload = itemPayload && itemPayload[key] ? String(itemPayload[key]) : label;
+
+      // Determine the label to display: use config label if available, otherwise use value from payload/label prop
+      const displayLabel = typeof valueFromPayload === 'string' && config[valueFromPayload as keyof typeof config]?.label
+        ? config[valueFromPayload as keyof typeof config]?.label
+        : valueFromPayload;
+
 
       if (labelFormatter) {
         return (
           <div className={cn("font-medium", labelClassName)}>
-            {labelFormatter(value, payload)}
+            {labelFormatter(displayLabel, payload)}
           </div>
         )
       }
 
-      if (!value) {
+      if (!displayLabel) {
         return null
       }
 
-      return <div className={cn("font-medium", labelClassName)}>{value}</div>
+      return <div className={cn("font-medium", labelClassName)}>{displayLabel}</div>
     }, [
       label,
       labelFormatter,
@@ -192,7 +197,7 @@ const ChartTooltipContent = React.forwardRef<
 
             return (
               <div
-                key={item.dataKey}
+                key={item.dataKey || index} // Use index as fallback key
                 className={cn(
                   "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                   indicator === "dot" && "items-center"
@@ -238,9 +243,10 @@ const ChartTooltipContent = React.forwardRef<
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
-                      {item.value && (
+                      {item.value !== undefined && item.value !== null && ( // Check for null/undefined value
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {/* Ensure value is treated as number for toLocaleString */}
+                          {typeof item.value === 'number' ? item.value.toLocaleString() : String(item.value)}
                         </span>
                       )}
                     </div>
