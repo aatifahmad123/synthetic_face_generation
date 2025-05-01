@@ -11,7 +11,7 @@ This project implements a **Wasserstein Generative Adversarial Network with Grad
 - Train a CNN classifier to predict the "Young" attribute.
 - Evaluate the impact of synthetic data on classification performance.
 
-> A [Next.js website](https://synthetic-face-generation.example.com) showcases the methodology, results, and visualizations.
+> A [Next.js website](https://syntheticfacegeneration.netlify.app/) showcases the methodology, results, and visualizations.
 
 ---
 
@@ -105,7 +105,7 @@ Developed with **Next.js** to present:
 - Full methodology and evaluation metrics
 - Image galleries and comparison charts
 
-[Website URL](https://synthetic-face-generation.example.com)
+[Website URL](https://syntheticfacegeneration.netlify.app/)
 
 ### Local Setup
 
